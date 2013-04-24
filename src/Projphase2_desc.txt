@@ -1,0 +1,48 @@
+CSE 589 Project Phase 2
+Submitted by:- Puneet Arora, Aviral Mahajan
+
+Aim:-
+
+To implement Simpella(version 0.6) based on the simplified version of the Gnutella Protocol Version 0.6
+
+Functionality:-
+
+For the implementation of the Simpella Version (0.6), following classes were created:-
+
+1. Simpella :- This is the entry class. For any command which is being given as input in the Command Line interface, it calls the respective methods for that input. 
+
+2. Client: - This class is used to make connections with the server using Open Command. It also implements handshaking. The object of the class is passed down to the Listener.
+
+3. Server: -  This class is used to make connections with the client. The object of the class Is passed down to the listener.
+
+
+4. Listener: - It handles all the messages namely:- Ping, Pong, Query and Query Hit. The sendstaticping() is called by the Update Command.
+
+5. ConnInfo: - Information regarding every connection:- No of packets sent, no of packets received, no of bytes sent, no of bytes received.
+
+6. Database: - Consists of Array lists , Hash maps to store all the data regarding Ping, Pong, Query, Query hit and Routing Table.
+
+7. DirScan: - For the Query Hit Message, the Servant should know what all matching files are there in the Directory. This class does that implementation.
+
+8. HttpClient: - After entering the Download command, this class connects to the servent where the file is stored and also retrieves that file.
+
+9. HttpServer: - After entering the Download command, the client connects to the HttpServer class, and this class sends the file to the HttpClient.
+
+10. Message: - It is the superclass of all the message types. It contains the header information of all the messages namely:- Ping, Pong, Query, QueryHit
+
+11. Node: - This class contains Socket, ObjectInputStream and ObjectOutputStream of all the connections.
+
+12. Ping,Pong,Query,QueryHit: - All these classes are called by other classes for propagating the respective messages (header +payload) in the network. It also prevent infinite circulation of messages between the servants which are connected in a cycle i.e if  a servant receive back a message which it has initiated it will drop it and not forward it further.
+
+13. Result: - In the message payload of Query Hit, a Result Set consists of all the set of responses to the Query.  Every response is stored in the Result class, so a Result set consists of a set of Result class values.
+
+14. ShareScan: - It implements the share and scan commands.
+
+How to Execute the Project:-
+
+1. Run the make file to compile the program.
+2. Compile : “make”
+3. Run: java simpella port1 port2. (it will host at default ports if port not specified)
+4. Give different commands
+5. Quit the program by giving Quit command
+

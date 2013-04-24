@@ -1,0 +1,57 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.net.Socket;
+
+
+public class EchoImpl extends Thread {
+	
+	protected Socket clientsocket;
+	private int flag =0;
+
+	public EchoImpl(Socket s){
+//		System.out.println("EchoImpl : costructor()");
+		clientsocket=s;
+		start();
+	}
+	
+	public void run(){
+		try {
+//			System.out.println("EchoImpl : run()");
+			System.out.println("Got Conn. request from IP: "  + clientsocket.getInetAddress().getHostAddress()+ " PORT: "+clientsocket.getPort());
+			DataInputStream in =     new DataInputStream(clientsocket.getInputStream());
+	//		System.out.println("input stream done");
+			DataOutputStream out =    new DataOutputStream(clientsocket.getOutputStream());
+		//	System.out.println("Output stream done");
+			while (true) {
+	//			System.out.println("1");
+				String clientMessage = in.readUTF();
+		//		System.out.println("2");
+				out.writeUTF(clientMessage);
+			//	System.out.println("3");
+				System.out.println("echoing " + clientMessage
+						+ "\n\t to: IP = "
+						+ clientsocket.getRemoteSocketAddress()
+						+ "\n\t type = tcp\n\n");
+				//	out.close();
+				//in.close();
+				//           server.close();
+			}
+		}catch (EOFException e){
+		//	e.printStackTrace();
+		
+			System.out.println("Disconnected to IP: "  + clientsocket.getInetAddress().getHostAddress()+ " PORT: "+clientsocket.getPort());
+			this.stop();
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+		//	e.printStackTrace();
+			
+			System.out.println("Disconnected to IP: "  + clientsocket.getInetAddress().getHostAddress()+ " PORT: "+clientsocket.getPort());
+			this.stop();
+		}
+		
+	}
+	
+}

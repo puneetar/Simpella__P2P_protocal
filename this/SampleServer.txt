@@ -1,0 +1,85 @@
+import java.io.IOException;
+import java.net.*;
+import java.util.Scanner;
+import java.io.*;
+
+public class SampleServer
+{
+	
+	public static void main(String [] args)
+	{
+		int tcp_port = Integer.parseInt(args[0]);
+		int udp_port = Integer.parseInt(args[1]);
+		
+		try
+		{
+			Thread t = new TcpServer(tcp_port);
+			t.start();
+			
+			
+			
+		Thread t2 = new Thread(){
+			public void run(){
+				Scanner read_cmd=new Scanner(System.in).useDelimiter(" ");
+				while(true)	{
+					
+					String cmd=read_cmd.next();
+								
+					if(cmd.equalsIgnoreCase("info")){
+						
+					
+					}
+					else if(cmd.equalsIgnoreCase("connect")){
+						try {
+							GreetingClient.connect(read_cmd.next(),read_cmd.nextInt());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+					}
+					else if(cmd.equalsIgnoreCase("show")){
+						GreetingClient.show();
+					
+					}
+					else if(cmd.equalsIgnoreCase("send")){
+						int conn_id=read_cmd.nextInt();
+						//read_cmd.useDelimiter("\n");
+						String msg;
+				//		read_cmd.useDelimiter(" ");
+						while(read_cmd.hasNext()){
+							msg=msg+read_cmd.next();
+						}
+						GreetingClient.send(conn_id,msg);
+						
+						
+					}
+					else if(cmd.equalsIgnoreCase("sendto")){
+						
+						
+					}
+					else if(cmd.equalsIgnoreCase("disconnect")){
+						GreetingClient.disconnect(read_cmd.nextInt());
+						
+					}
+					else if(cmd.equalsIgnoreCase("exit")){
+						System.exit(1);
+					}
+					else
+						System.out.println("UNKNOWN COMMAND");
+				}
+			}
+		};
+			t2.start();
+			
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	
+	
+	
+	}
+}
+
+
